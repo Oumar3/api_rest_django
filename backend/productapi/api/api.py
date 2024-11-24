@@ -6,15 +6,18 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 
 @api_view(['GET','POST','PUT','DELETE'])
-def product_view_api(request,pk=None,*args, **kwargs):
+def product_view_api(request, pk=None, *args, **kwargs):
     if request.method=='GET':
         if pk is not None:
             product = get_object_or_404(Product,pk=pk)
-            data_serializer = ProductSerialiser(product)
+            context = {'request': request}
+            data_serializer = ProductSerialiser(product,context=context)
             return Response(data_serializer.data)
-        
+        context={
+            'request':request
+        }
         products = Product.objects.all()
-        data_serializer = ProductSerialiser(products, many=True)
+        data_serializer = ProductSerialiser(products, many=True,context=context)
         return Response(data_serializer.data)
 
     if request.method=='POST':
