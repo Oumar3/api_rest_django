@@ -2,11 +2,10 @@ from rest_framework import serializers
 from  productapi.models import Product
 
 class ProductSerialiser(serializers.ModelSerializer):
-    detail_product = serializers.HyperlinkedIdentityField(view_name='detail_product',lookup_field='pk')
     name = serializers.CharField()
     class Meta:
         model = Product
-        fields = ['name','content','price','detail_product']
+        fields = '__all__'
 
 
     def validate(self, attrs):

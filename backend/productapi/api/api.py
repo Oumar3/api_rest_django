@@ -21,7 +21,9 @@ def product_view_api(request, pk=None, *args, **kwargs):
         return Response(data_serializer.data)
 
     if request.method=='POST':
-        serializer = ProductSerialiser(data=request.data)
+        print(request.stream)
+        context={'request': request}
+        serializer = ProductSerialiser(data=request.data,context=context)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
